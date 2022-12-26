@@ -11,7 +11,6 @@
 #ifndef AVAHI_ENTRYGROUP_INTERFACE_H_1175536773
 #define AVAHI_ENTRYGROUP_INTERFACE_H_1175536773
 
-#include <QByteRef>
 #include <QDBusAbstractInterface>
 #include <QDBusConnection>
 #include <QDBusReply>
@@ -37,7 +36,7 @@ public:
 public:
     OrgFreedesktopAvahiEntryGroupInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
-    ~OrgFreedesktopAvahiEntryGroupInterface();
+    ~OrgFreedesktopAvahiEntryGroupInterface() override;
 
 public Q_SLOTS: // METHODS
     inline QDBusReply<void> AddAddress(int interface, int protocol, uint flags, const QString &name, const QString &address)

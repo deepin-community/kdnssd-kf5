@@ -11,7 +11,6 @@
 #ifndef AVAHI_SERVICERESOLVER_INTERFACE_H_1175536773
 #define AVAHI_SERVICERESOLVER_INTERFACE_H_1175536773
 
-#include <QByteRef>
 #include <QDBusAbstractInterface>
 #include <QDBusConnection>
 #include <QDBusReply>
@@ -37,7 +36,7 @@ public:
 public:
     OrgFreedesktopAvahiServiceResolverInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
-    ~OrgFreedesktopAvahiServiceResolverInterface();
+    ~OrgFreedesktopAvahiServiceResolverInterface() override;
 
 public Q_SLOTS: // METHODS
     inline QDBusReply<void> Free()

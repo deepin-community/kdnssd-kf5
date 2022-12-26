@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(KF_VERSION "5.86.0") # handled by release scripts
+set(KF_VERSION "5.90.0") # handled by release scripts
 project(KDNSSD VERSION ${KF_VERSION})
 
 include(FeatureSummary)
-find_package(ECM 5.86.0  NO_MODULE)
+find_package(ECM 5.90.0  NO_MODULE)
 set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://commits.kde.org/extra-cmake-modules")
 feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
@@ -24,7 +24,7 @@ option(BUILD_QCH "Build API documentation in QCH format (for e.g. Qt Assistant, 
 add_feature_info(QCH ${BUILD_QCH} "API documentation in QCH format (for e.g. Qt Assistant, Qt Creator & KDevelop)")
 
 set(REQUIRED_QT_VERSION 5.15.2)
-find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Network)
+find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED Network)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -38,7 +38,7 @@ ecm_setup_version(PROJECT VARIABLE_PREFIX KDNSSD
     VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/kdnssd_version.h"
     PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5DNSSDConfigVersion.cmake"
     SOVERSION 5)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kdnssd_version.h DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5} COMPONENT Devel)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kdnssd_version.h DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF} COMPONENT Devel)
 
 configure_file(config-kdnssd.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-kdnssd.h )
 
@@ -60,7 +60,7 @@ if(NOT AVAHI_FOUND)
 endif( )
 
 if(AVAHI_FOUND OR DNSSD_FOUND)
-    find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
+    find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
 endif()
 
 ecm_install_po_files_as_qm(po)
