@@ -1,22 +1,27 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(KF_VERSION "5.90.0") # handled by release scripts
+set(KF_VERSION "5.103.0") # handled by release scripts
 project(KDNSSD VERSION ${KF_VERSION})
 
 include(FeatureSummary)
-find_package(ECM 5.90.0  NO_MODULE)
+find_package(ECM 5.103.0  NO_MODULE)
 set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://commits.kde.org/extra-cmake-modules")
 feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules) #TODO: remove cmake/modules when extra-cmake-modules is done
 
 include(KDEInstallDirs)
-include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
-include(KDEGitCommitHooks)
+include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 
+include(KDEGitCommitHooks)
 include(ECMPoQmTools)
 include(ECMAddQch)
+include(ECMGenerateExportHeader)
+include(ECMSetupVersion)
+include(ECMGenerateHeaders)
+include(ECMDeprecationSettings)
+include(CMakePackageConfigHelpers)
 
 set(EXCLUDE_DEPRECATED_BEFORE_AND_AT 0 CACHE STRING "Control the range of deprecated API excluded from the build [default=0].")
 
@@ -28,17 +33,15 @@ find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED Networ
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-
-include(ECMGenerateExportHeader)
-include(ECMSetupVersion)
-include(ECMGenerateHeaders)
-include(CMakePackageConfigHelpers)
-
 ecm_setup_version(PROJECT VARIABLE_PREFIX KDNSSD
     VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/kdnssd_version.h"
     PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5DNSSDConfigVersion.cmake"
     SOVERSION 5)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kdnssd_version.h DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF} COMPONENT Devel)
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/kdnssd_version.h
+    DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/KDNSSD
+    COMPONENT Devel
+)
 
 configure_file(config-kdnssd.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-kdnssd.h )
 
@@ -63,10 +66,13 @@ if(AVAHI_FOUND OR DNSSD_FOUND)
     find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
 endif()
 
-ecm_install_po_files_as_qm(po)
+ecm_install_po_files_as_qm(poqm)
 
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
-add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f02)
+ecm_set_disabled_deprecation_versions(
+    QT 5.15.2
+)
+
 add_subdirectory(src)
 
 set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF5DNSSD")
