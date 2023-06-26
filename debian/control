@@ -7,14 +7,14 @@ Uploaders: Aurélien COUDERC <coucouf@debian.org>,
 Build-Depends: cmake (>= 3.16~),
                debhelper-compat (= 13),
                doxygen,
-               extra-cmake-modules (>= 5.90.0~),
+               extra-cmake-modules (>= 5.103.0~),
                libavahi-common-dev,
                libqt5sql5-sqlite,
                pkg-kde-tools (>= 0.15.15ubuntu1~),
                qtbase5-dev (>= 5.15.2~),
                qttools5-dev (>= 5.4),
                qttools5-dev-tools (>= 5.4),
-Standards-Version: 4.6.0
+Standards-Version: 4.6.2
 Homepage: https://invent.kde.org/frameworks/kdnssd
 Vcs-Browser: https://salsa.debian.org/qt-kde-team/kde/kdnssd
 Vcs-Git: https://salsa.debian.org/qt-kde-team/kde/kdnssd.git
@@ -22,7 +22,7 @@ Rules-Requires-Root: no
 
 Package: libkf5dnssd-data
 Architecture: all
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends},
 Multi-Arch: foreign
 Description: Abstraction to system DNSSD features.
  KDNSSD is a library for handling the DNS-based
@@ -37,19 +37,19 @@ Architecture: any
 Depends: libkf5dnssd5 (= ${binary:Version}),
          qtbase5-dev (>= 5.15.2~),
          ${misc:Depends},
-Recommends: libkf5dnssd-doc (= ${source:Version})
+Recommends: libkf5dnssd-doc (= ${source:Version}),
 Description: development files for kdnssd
  KDNSSD is a library for handling the DNS-based
  Service Discovery Protocol (DNS-SD), the layer of
  Zeroconf that allows network services.
  .
  Contains development files for kdnssd.
-Breaks: libkf5kdelibs4support-dev (<< 5.54)
+Breaks: libkf5kdelibs4support-dev (<< 5.54),
 
 Package: libkf5dnssd-doc
 Architecture: all
 Multi-Arch: foreign
-Depends: ${misc:Depends}
+Depends: ${misc:Depends},
 Description: Abstraction to system DNSSD features (documentation)
  KDNSSD is a library for handling the DNS-based
  Service Discovery Protocol (DNS-SD), the layer of
